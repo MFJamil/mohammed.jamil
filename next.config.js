@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   distDir: 'dist',
-  /*
-  output: "export",
-  
   images: {
     remotePatterns: [
       {
@@ -13,6 +10,10 @@ const nextConfig = {
       },
     ],
   },
+
+  /*
+  output: "export",
+  
   */
 };
 
