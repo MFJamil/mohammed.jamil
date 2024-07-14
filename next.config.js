@@ -2,6 +2,7 @@
 const nextConfig = {
   output: "export",
   reactStrictMode: true,
+  /*
   images: {
     remotePatterns: [
       {
@@ -10,6 +11,7 @@ const nextConfig = {
       },
     ],
   },
+  */
 };
 
 module.exports = nextConfig;
