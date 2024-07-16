@@ -54,7 +54,7 @@ function Hero() {
           width={720}
           height={960}
           alt="team work"
-          src="/mohammed.jamil/image/MJ_1.jpg"
+          src="/image/MJ_1.jpg"
           className="w-full rounded-xl object-cover"
           style={{opacity: 0.4}}
           unoptimized 
