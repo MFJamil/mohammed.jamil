@@ -5,7 +5,7 @@ const nextConfig = {
   basePath: "/mohammed.jamil",
   
   output: "export",
-  distDir: "docs",
+  distDir: "out",
   images: {
     remotePatterns: [
       {
