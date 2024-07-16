@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   basePath: "/mohammed.jamil",
   output: "export",
+
+  /*
   images: {
     remotePatterns: [
       {
@@ -12,8 +14,6 @@ const nextConfig = {
     ],
   },
 
-  /*
-  output: "export",
   
   */
 };
