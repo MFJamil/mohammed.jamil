@@ -3,6 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
   basePath: "/mohammed.jamil",
   output: "export",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 
   /*
   images: {
