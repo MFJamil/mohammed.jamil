@@ -57,7 +57,7 @@ function Hero() {
           src="/image/MJ_1.jpg"
           className="w-full rounded-xl object-cover"
           style={{opacity: 0.4}}
-          unoptimized 
+           
           
         />
       </div>
