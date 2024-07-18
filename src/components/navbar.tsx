@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   Navbar as MTNavbar,
   Collapse,
@@ -76,6 +77,14 @@ export function Navbar() {
           color="blue-gray" className="text-lg font-bold">
           Mohammed Jamil
         </Typography>
+        <Image
+            width={50}
+            height={50}
+            alt="logo"
+            src="/image/design_1.png"
+            style={{opacity: 0.4}}
+            />
+
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, icon: Icon, href }) => (
             <NavItem key={name} href={href}>
