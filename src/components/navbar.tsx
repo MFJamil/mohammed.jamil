@@ -72,19 +72,21 @@ export function Navbar() {
       placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
       shadow={false} fullWidth className="border-0 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
-        <Typography 
-          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-          color="blue-gray" className="text-lg font-bold">
-          Mohammed Jamil
-        </Typography>
-        <Image
-            width={50}
-            height={50}
-            alt="logo"
-            src="/image/design_1.png"
-            style={{opacity: 0.4}}
-            />
+        <ul className="ml-10 hidden items-center gap-8 lg:flex">
+          <Image
+                width={50}
+                height={50}
+                alt="logo"
+                src="/image/design_1.png"
+                />
 
+          <Typography 
+            placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+            color="blue-gray" className="text-lg font-bold">
+
+            Mohammed Jamil
+          </Typography>
+        </ul>
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, icon: Icon, href }) => (
             <NavItem key={name} href={href}>
