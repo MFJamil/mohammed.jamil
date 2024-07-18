@@ -74,8 +74,8 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between">
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
           <Image
-                width={50}
-                height={50}
+                width={100}
+                height={100}
                 alt="logo"
                 src="/image/design_1.png"
                 />
