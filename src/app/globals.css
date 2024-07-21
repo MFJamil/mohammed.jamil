@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scroll-anim1{
+    background-color: blue;
+    transition: all 0.4s;
+}
+
+.moveUpfadeIn1{
+    opacity: 1 !important;
+    transition-duration: 2500;
+    top: -50px !important;
+    position: relative;
+    
+}
+.moveUpfadeIn{
+    -webkit-transform:translate3d(0,-50px,0);
+    transform:translate3d(0,-50px,0);
+    transition-duration: 1.5s;
+}

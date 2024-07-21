@@ -26,7 +26,7 @@ const RESUME_ITEMS = [
 
 export function Resume() {
   return (
-    <section className="px-8 py-24">
+    <section className="px-8 py-24" id="resume">
       <div className="container mx-auto grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-2">
         <div className="col-span-1">
           <Typography 

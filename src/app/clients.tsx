@@ -4,17 +4,12 @@ import Image from "next/image";
 import { Typography } from "@material-tailwind/react";
 
 const CLIENTS = [
-  "coinbase",
-  "spotify",
-  "pinterest",
-  "google",
-  "amazon",
-  "netflix",
+  "......",
 ];
 
 export function Clients() {
   return (
-    <section className="px-8 py-28">
+    <section className="px-8 py-28" id="clients">
       <div className="container mx-auto text-center">
         <Typography variant="h6" color="blue-gray" className="mb-8" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           My awesome clients

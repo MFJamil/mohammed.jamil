@@ -10,7 +10,9 @@ export function SkillCard({ icon: Icon, title, children }: SkillCardProps) {
   return (
     <Card 
       placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-      color="transparent" shadow={false}>
+      color="transparent" shadow={false}
+      
+      >
       <CardBody 
         placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
         className="grid justify-center text-center">
