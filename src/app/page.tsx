@@ -20,12 +20,16 @@ import Script from 'next/script'
       <Resume />
       <Testimonial />
       <PopularClients />
-*/
+
+  <Script src='https://cdn.jsdelivr.net/npm/smyld-lib-common@1.0.35/main.min.js'></Script>
+      <Script src="https://cdn.jsdelivr.net/npm/smyld-lib-3d@0.1.36/dist/smyld-lib-3d.min.js"></Script>
+    
+
+      */
 export default function Portfolio() {
   return (
     <>
-      <Script src='https://cdn.jsdelivr.net/npm/smyld-lib-common@1.0.35/main.min.js'></Script>
-      <Script src="https://cdn.jsdelivr.net/npm/smyld-lib-3d@0.1.36/dist/smyld-lib-3d.min.js"></Script>
+
       <Navbar />
       <Hero />
       <Image

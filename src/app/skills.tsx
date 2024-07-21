@@ -54,7 +54,7 @@ export function Skills() {
   return (
     <section className="px-8" id="skills" >
 
-      <div className="container mx-auto mb-20 text-center" shown="moveUpfadeIn">
+      <div className="container mx-auto mb-20 text-center" >
         <Typography 
           placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
           color="blue-gray" className="mb-2 font-bold uppercase">
@@ -75,7 +75,7 @@ export function Skills() {
           calling. Discover below how I can help you.
         </Typography>
       </div>
-      <div className="container mx-auto grid grid-cols-1 gap-y-10 md:grid-cols-2 lg:grid-cols-3" shown="moveUpfadeIn">
+      <div className="container mx-auto grid grid-cols-1 gap-y-10 md:grid-cols-2 lg:grid-cols-3" >
         {SKILLS.map((props, idx) => (
           <SkillCard key={idx} {...props} />
         ))}

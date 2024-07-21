@@ -49,7 +49,7 @@ const PROJECTS = [
 export function Projects() {
   return (
     <section className="py-28 px-8" id="projects" >
-      <div className="container mx-auto mb-20 text-center" shown="moveUpfadeIn">
+      <div className="container mx-auto mb-20 text-center" >
         <Typography 
           placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
 
