@@ -21,6 +21,7 @@ const NAV_MENU = [
     name: "Page",
     icon: RectangleStackIcon,
   },
+  /*
   {
     name: "Clients",
     icon: UserCircleIcon,
@@ -39,6 +40,7 @@ const NAV_MENU = [
     href: "#resume",
     target: "_self"
   },
+  */
   {
     name: "Contact",
     icon: CommandLineIcon,
@@ -113,13 +115,6 @@ export function Navbar() {
             </NavItem>
           ))}
         </ul>
-        <div className="hidden items-center gap-2 lg:flex">
-          <a href="https://www.material-tailwind.com/blocks" target="_blank">
-            <Button 
-              placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-              color="gray">Bla</Button>
-          </a>
-        </div>
         <IconButton
           placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
           variant="text"
