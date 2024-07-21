@@ -11,6 +11,7 @@ import Testimonial from "./testimonial";
 import PopularClients from "./popular-clients";
 import ContactForm from "./contact-form";
 import Image from "next/image";
+import Script from 'next/script'
 
 /*
       <Clients />
@@ -23,8 +24,8 @@ import Image from "next/image";
 export default function Portfolio() {
   return (
     <>
-      <script src='https://cdn.jsdelivr.net/npm/smyld-lib-common@1.0.35/main.min.js'></script>
-      <script src="https://cdn.jsdelivr.net/npm/smyld-lib-3d@0.1.36/dist/smyld-lib-3d.min.js"></script>
+      <Script src='https://cdn.jsdelivr.net/npm/smyld-lib-common@1.0.35/main.min.js'></Script>
+      <Script src="https://cdn.jsdelivr.net/npm/smyld-lib-3d@0.1.36/dist/smyld-lib-3d.min.js"></Script>
       <Navbar />
       <Hero />
       <Image
