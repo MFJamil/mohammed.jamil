@@ -32,12 +32,17 @@ export default function Portfolio() {
 
       <Navbar />
       <Hero />
+      
+      <div className="container mx-auto text-center w-full">
       <Image
         width={640}
         height={425}
         alt="Under Construction"
+        className="w-full object-cover"
         src="/image/under_construction_1.png"
       />
+      </div>
+      
 
 
 
