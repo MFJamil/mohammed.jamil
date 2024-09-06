@@ -15,6 +15,7 @@
     window.removeRight = removeRight;
     window.doAnimate = doAnimate;
     let panelOpened = true;
+    let animating = false;
 
     function togglePanel(iconEl) {
       console.log("Toggel is called with Item : ");
@@ -31,7 +32,34 @@
       }
 
     }
+    function animateAlways(){
+      let animateIcon = document.getElementById('animateAlways');
+      if (animating) {
+        animateIcon.src ="assets/infinity.png";
+      }else{
+        animateIcon.src ="assets/autism.png";
+      }
+      animating = !animating;
+      doAnimate(true);
+    }
+
+    function takeScreenShot(){
+      const cont = document.getElementById('container');
+      const canvas = document.getElementById('canvas1')
+      const img    = canvas.toDataURL('image/png')
+      document.getElementById('saveImage').src=img;
+      
+      var a = document.createElement('a');
+      a.href = img; //make the link of image
+      a.download = `Balken_${cont.clientWidth}_${cont.clientHeight}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
     window.togglePanel = togglePanel;
+    window.takeScreenShot = takeScreenShot;
+    window.animateAlways = animateAlways;
   </script>
   <script type="module" src='./Raster.js'></script>
   <script type="module" src='./main.js'></script>
@@ -47,7 +75,7 @@
 
   <div class="container" id="container">
     <canvas id="canvas1"></canvas>
-    <div style="position: relative; font-size: 30px; padding: 15px;font-family:fantasy;color: black;" id="textEl">
+    <div style="position: relative; font-size: 30px; padding: 5px;font-family:fantasy;color: black;" id="textEl">
       Testing The content to be above the canvas</div>
 
   </div>
@@ -63,7 +91,7 @@
       <input name="start" type="range" min="1" max="100" value="45" id="start" onchange="dataChange(this);" />
 
       <label for="height">Height</label>
-      <input name="height" type="range" min="50" max="800" value="400" id="height" onchange="dataChange(this);" />
+      <input name="height" type="range" min="30" max="800" value="500" id="height" onchange="dataChange(this);" />
       <label for="width">Width</label>
       <input name="width" type="range" min="50" max="1800" value="1000" id="width" onchange="dataChange(this);" />
       <div style="display: flex;flex-direction: row;">
@@ -84,16 +112,20 @@
       <label for="removeRight" >Right</label>
       <input type="checkbox" id="removeRight" value="remove" onchange="removeRight(this)" checked />
       <div style="display: flex;flex-direction: row;">
-        <input name="animateonce" type="button" value="Animate" id="blockSize" onclick="doAnimate(false)" />
-        <input name="animatealways" type="button" value="∞" id="blockSize" onclick="doAnimate(true)" />
+        
+        <img src="assets/vector.png" style="width: 16px;padding-left: 10px;cursor: pointer;" onclick="doAnimate(false)" />
+        <img src="assets/infinity.png" id="animateAlways" style="width: 16px;padding-left: 10px;cursor: pointer;" onclick="animateAlways()" />
+        <!--input name="animatealways" type="button" value="∞" id="blockSize" onclick="doAnimate(true)" /-->
+        <!--input name="animateonce" type="button" value="Animate" id="blockSize" onclick="doAnimate(false)" /-->
     
         
       </div>
     </div>
 
     <!--             ARROW            -->
-    <div>
+    <div style="display: flex;flex-direction: column;">
       <img src="./assets/arrow.png" class="panelIcon" onclick="togglePanel(this)" id="panelIcon">
+      <img src="./assets/photo-camera.png"  class="panelIcon" onclick="takeScreenShot()" id="panelIcon">
     </div>
 
 
@@ -149,6 +181,7 @@
 
     </div>
   </div>
+  <img style="display: none;" id="saveImage" />
 
 
 
