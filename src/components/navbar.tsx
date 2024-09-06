@@ -107,6 +107,7 @@ export function Navbar() {
             M.Jamil
           </Typography>
         </ul>
+        
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, icon: Icon, href,target }) => (
             <NavItem key={name} href={href} target={target} >
