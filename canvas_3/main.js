@@ -23,7 +23,8 @@ window.addEventListener('load',()=>{
     config.blockSize = 16;
     config.policy = "fixed";
     config.drawRight = true;
-    config.startDraw = cont.clientWidth * 0.2;
+    config.fps = 30;
+    config.startDraw = cont.clientWidth * 0.45;
     //config.endDraw = cont.clientWidth;
     console.log("cont.clientWidth : " + cont.clientWidth);
     console.log("cont.clientHeight : " + cont.clientHeight);
@@ -107,16 +108,22 @@ export function dataChange(data){
     console.dir(data);
     config[data.name] = ['number','range'].indexOf(data.type)!==-1?data.valueAsNumber:data.value;
     
-    if ((data.name==='width')||(data.name==='height')){
-        canvas.style[data.name] = data.value;
-        canvas.setAttribute('width', config.width + "px");
-        canvas.setAttribute('height', config.height + "px");
-        cont.style.width = config.width + "px";
-        cont.style.height = config.height + "px";
+    switch(data.name){
+        case 'width': case 'height':
+            canvas.style[data.name] = data.value;
+            canvas.setAttribute('width', config.width + "px");
+            canvas.setAttribute('height', config.height + "px");
+            cont.style.width = config.width + "px";
+            cont.style.height = config.height + "px";
+            break;
+        case 'start':
+            config.startDraw = config.width * (data.valueAsNumber/100);
+            break;
+        case 'fps':
+            raster.fpsUpdate();
+            break;
     }
-    if (data.name==='start'){
-        config.startDraw = config.width * (data.valueAsNumber/100);
-    }
+    
     raster.draw(config);
 }
 

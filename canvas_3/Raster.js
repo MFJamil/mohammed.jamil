@@ -2,11 +2,13 @@
 export class Raster{
 
 
-    fps = 60;
+    fps = 10;
+    frameTime = 1000/this.fps;
+    starTime=0;
     prevTime = -1;
     animatRef = 1;
     animConfig={};
-    frameCount = 1;
+    
 
     animateAlways = false;
     stopAnimation = false;
@@ -18,13 +20,14 @@ export class Raster{
 
 
     animateNext(timeStamp){
-        //console.log(`Next (${this.frameCount++}) ......  ${timeStamp} start point : ${this.animConfig.startDraw}`);
-        if (this.prevTime===-1)  this.prevTime = timeStamp;
-        let timeDiff = 1000/this.fps;
-        if ((timeStamp-this.prevTime)>=timeDiff){
-            
+        let now = Date.now();
+        //console.log(` ${timeStamp} start point : ${this.animConfig.startDraw} time Diff ${timeDiff}`);
+        let elapsedTime = now-this.starTime; 
+        if (elapsedTime>=this.frameTime){
+            this.starTime = now - (elapsedTime%this.frameTime);
             this.animConfig.startDraw = this.animConfig.start;
             this.draw(this.animConfig);
+            
             if (this.doStopAnimation()){
                 cancelAnimationFrame(this.animatRef);
             } else{
@@ -32,7 +35,6 @@ export class Raster{
             }
         }
         if (!this.doStopAnimation()){
-            this.prevTime = timeStamp;
             this.animatRef = requestAnimationFrame(this.animateNext.bind(this))
         }else{this.animationStopped();}
         //console.log(`config.start (${config.start}) -- config.width (${config.width}) `)
@@ -53,21 +55,6 @@ export class Raster{
                 this.animConfig.color1 = this.animConfig.color2;
                 this.animConfig.color2 = color1;
                 this.doStartAnimation(this.animConfig);
-                /*
-                this.animConfig.start = -1*(this.animConfig.width*0.25);
-                const cont = document.getElementById('container');
-                this.animConfig.width = cont.clientWidth;
-                this.animConfig.height = cont.clientHeight;
-        
-                this.animConfig.ct.fillStyle = this.animConfig.color2;
-                this.animConfig.ct.fillRect(0, 0, this.animConfig.width, this.animConfig.height);
-        
-        
-                setTimeout(() => {
-                    this.animatRef = requestAnimationFrame(this.animateNext.bind(this));    
-                }, 1000);
-                */
-    
             }, 1000);
 
     
@@ -81,20 +68,6 @@ export class Raster{
         this.animConfig = config;
 
         this.doStartAnimation(config);
-        /*
-        this.animConfig.start = -1*(this.animConfig.width*0.25);
-        const cont = document.getElementById('container');
-        this.animConfig.width = cont.clientWidth;
-        this.animConfig.height = cont.clientHeight;
-
-        this.animConfig.ct.fillStyle = config.color2;
-        this.animConfig.ct.fillRect(0, 0, this.animConfig.width, this.animConfig.height);
-
-        setTimeout(() => {
-            this.animatRef = requestAnimationFrame(this.animateNext.bind(this));    
-        }, 1000);
-        */
-        
     }
 
     doAnimateAlways(config){
@@ -110,21 +83,6 @@ export class Raster{
         //if (this.stopAnimation) this.stopAnimation = false;
         
         this.doStartAnimation(config);
-        /*
-        this.animConfig = config;
-        this.animConfig.start = -1*(this.animConfig.width*0.25);
-        const cont = document.getElementById('container');
-        this.animConfig.width = cont.clientWidth;
-        this.animConfig.height = cont.clientHeight;
-
-        this.animConfig.ct.fillStyle = config.color2;
-        this.animConfig.ct.fillRect(0, 0, this.animConfig.width, this.animConfig.height);
-
-        setTimeout(() => {
-            this.animatRef = requestAnimationFrame(this.animateNext.bind(this));    
-        }, 1000);
-        */
-        
     }
 
     doStartAnimation(config){
@@ -136,8 +94,10 @@ export class Raster{
 
         this.animConfig.ct.fillStyle = config.color2;
         this.animConfig.ct.fillRect(0, 0, this.animConfig.width, this.animConfig.height);
-
+        this.animConfig.fps = config.fps;
+        this.frameTime = 1000/config.fps;
         setTimeout(() => {
+            this.starTime = Date.now();
             this.animatRef = requestAnimationFrame(this.animateNext.bind(this));    
         }, 1000);
 
@@ -232,6 +192,10 @@ export class Raster{
         
         this.ctx.fillStyle=fcolor;
         this.ctx.fillRect(xPos, yPos, width , height );
+    }
+
+    fpsUpdate(){
+        this.frameTime = 1000/this.animConfig.fps;
     }
 
     calculateSize(set){

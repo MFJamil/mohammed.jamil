@@ -37,8 +37,8 @@
     top:10px;
 }
 .colorSample{
-    width: 40px;
-    height: 20px;
+    width: 60px;
+    height: 30px;
     border: 1px solid black;
     border-radius: 4px;
     align-self: stretch;
@@ -71,6 +71,35 @@
     background-color: rgba(200, 200, 200, 0.7);
 
 }
+.colorsPalleteContainer{
+    position: fixed;
+    border-radius: 20px;
+    width: auto;
+    height: auto;
+    border: 1px solid gray;
+    flex-grow: 2;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    z-index: 100;
+    margin:0px;
+    padding: 15px;
+    gap: 20px;
+    bottom:4px;
+    left:4px;
+    transition-duration: .5s;
+    background-color: rgba(200, 200, 200, 0.7);
+
+}
+
+.controlLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+
+}
 
 
 
@@ -88,9 +117,11 @@
     top:500px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    gap: 5px;
 }
 
 .textContainer{
+    gap: 5px;
     margin:20px;
     padding: 15px;
     width: auto;
