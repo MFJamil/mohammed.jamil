@@ -82,8 +82,8 @@
     align-items: start;
     flex-direction: column;
     z-index: 100;
-    margin:0px;
-    padding: 15px;
+    margin-top: 80px;
+    padding: 25px;
     gap: 20px;
     bottom:4px;
     left:4px;
@@ -100,8 +100,6 @@
     text-align: center;
 
 }
-
-
 
 .rasterContainer{
     border: 1px solid gray;
@@ -138,7 +136,7 @@
 }
 .panelIcon{
     padding: 20px;
-    width: 32px;
+    width: 24px;
     cursor: pointer;
     transition-duration: .5s;
     

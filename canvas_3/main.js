@@ -10,6 +10,7 @@ let prevTime = -1;
 
 
 let animatRef = 1;
+let liveRender = false;
 
 window.addEventListener('load',()=>{
 
@@ -34,35 +35,8 @@ window.addEventListener('load',()=>{
     document.getElementById('width').value = cont.clientWidth;
     config.width = cont.clientWidth;
     config.height = cont.clientHeight;
-    raster.draw(config);
-
-    /*
-    
-    class Game {
-        constructor(width,height){
-            this.width = width;
-            this.height = height;
-            this.player = new Player(this);
-            this.input = new InputHandler();
-        }
-        update(){
-            this.player.update(this.input.keys);
-        }
-        draw(context){
-            this.player.draw(context);
-        }
-    }
-    const game = new Game(canvas.width,canvas.height);
-    console.log(game);
-
-    function animate(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        game.update();
-        game.draw(ctx);
-        requestAnimationFrame(animate);
-    }
-    animate();
-    */
+    if(liveRender)
+        raster.draw(config);
 })
 
 
@@ -94,7 +68,8 @@ export function textChange(data){
     if (data.name==='start'){
         config.startDraw = config.width * (data.valueAsNumber/100);
     }
-    raster.draw(config);
+    if (liveRender)
+        raster.draw(config);
 }
 
 
@@ -106,11 +81,11 @@ export function dataChange(data){
 
     console.log("Got Data Change : " + data.value + " , holding type : " + typeof data.value);
     console.dir(data);
-    config[data.name] = ['number','range'].indexOf(data.type)!==-1?data.valueAsNumber:data.value;
+    config[data.id] = ['number','range'].indexOf(data.type)!==-1?data.valueAsNumber:data.value;
     
-    switch(data.name){
+    switch(data.id){
         case 'width': case 'height':
-            canvas.style[data.name] = data.value;
+            canvas.style[data.id] = data.value;
             canvas.setAttribute('width', config.width + "px");
             canvas.setAttribute('height', config.height + "px");
             cont.style.width = config.width + "px";
@@ -124,7 +99,15 @@ export function dataChange(data){
             break;
     }
     
+    if (liveRender) raster.draw(config);
+}
+
+export function draw(){
     raster.draw(config);
+}
+
+export function renderLive(doRender){
+    liveRender = doRender;
 }
 
 function animateNext(timeStamp){
@@ -154,23 +137,6 @@ function animateNext(timeStamp){
 export function doAnimate(always=false){
     if (always) raster.doAnimateAlways(config);
     else raster.doAnimateOnce(config);
-    
-    /*
-    console.log("Animate is called ....");
-    config.start = 1;
-    const cont = document.getElementById('container');
-    config.width = cont.clientWidth;
-    config.height = cont.clientHeight;
-    
-    animatRef = requestAnimationFrame(animateNext);
-
-    let ref = setInterval(() => {
-        
-        animateStart ++;        
-        if (animateStart>=100) clearInterval(ref);
-    },(100));
-    */
-    
 }
 
 

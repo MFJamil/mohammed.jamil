@@ -10,46 +10,60 @@
 
 <body>
   <script type="module">
-    import { dataChange, removeRight, doAnimate } from "./main.js";
+    import { dataChange, removeRight, doAnimate, draw, renderLive } from "./main.js";
     window.dataChange = dataChange;
     window.removeRight = removeRight;
     window.doAnimate = doAnimate;
-    let panelOpened = true;
-    let animating = false;
+    window.renderLive = renderLive;
+    window.draw = draw;
+    let curH = 250;
 
-    function togglePanel(iconEl,targetContainer,position) {
+    let panels = {
+      'controlContainer': false,
+      'colorsPalleteContainer': false
+    };
+    let panel_tops = {
+      'controlContainer': 260,
+      'colorsPalleteContainer': 185
+    };
+
+    let animating = false;
+    let renderAcitve = true;
+
+    function togglePanel(iconEl, targetContainer) {
       console.log("Toggel is called with Item : ");
       console.dir(iconEl);
-      panelOpened = !panelOpened;
+      //panelOpened = !panelOpened;
       let panelElement = document.getElementById(targetContainer);
 
-      if (panelOpened) {
+      if (panels[targetContainer]) {
         panelElement.style.bottom = '4px';
         iconEl.style.transform = 'rotate(0deg)';
       } else {
-        panelElement.style.bottom = '-' + position + 'px';
+        panelElement.style.bottom = '-' + panel_tops[targetContainer] + 'px';
         iconEl.style.transform = 'rotate(180deg)';
       }
+      panels[targetContainer] = !panels[targetContainer];
 
     }
-    function animateAlways(){
+    function animateAlways() {
       let animateIcon = document.getElementById('animateAlways');
       if (animating) {
-        animateIcon.src ="assets/infinity.png";
-      }else{
-        animateIcon.src ="assets/autism.png";
+        animateIcon.src = "assets/infinity.png";
+      } else {
+        animateIcon.src = "assets/autism.png";
       }
       animating = !animating;
       doAnimate(true);
-      
+
     }
 
-    function takeScreenShot(){
+    function takeScreenShot() {
       const cont = document.getElementById('container');
       const canvas = document.getElementById('canvas1')
-      const img    = canvas.toDataURL('image/png')
-      document.getElementById('saveImage').src=img;
-      
+      const img = canvas.toDataURL('image/png')
+      document.getElementById('saveImage').src = img;
+
       var a = document.createElement('a');
       a.href = img; //make the link of image
       a.download = `Balken_${cont.clientWidth}_${cont.clientHeight}.png`;
@@ -58,17 +72,50 @@
       document.body.removeChild(a);
     }
 
-    function startUpdate(item){
-      dataChange(item);
-      document.getElementById('defaultStart').checked=(item.valueAsNumer==45);    
+    function startUpdate(item) {
+      dataUpdate(item);
+      document.getElementById('defaultStart').checked = (item.valueAsNumer == 45);
     }
 
-    function setDefaultStart(checkBox){
-      console.log(checkBox);
-      if (checkBox.checked){
-        dataChange({name:'start',valueAsNumer:45});
-        document.getElementById('start').value=45;
+    function setDefaultStart() {
+      updateField('start','45');
+      dataChange({ id: 'start', valueAsNumer: 45 });
+    }
+
+    function activateRender(activateRender) {
+      renderLive(activateRender);
+      if (activateRender) {
+        document.getElementById('btnLive').src = 'assets/live_active.png';
+        document.getElementById('btnRender').src = 'assets/render_disabled.png';
+      } else {
+        document.getElementById('btnLive').src = 'assets/live_disabled.png';
+        document.getElementById('btnRender').src = 'assets/render_active.png';
       }
+    }
+
+    function updateField(fieldID,fieldValue){
+      document.querySelectorAll(`[id="${fieldID}"]`).forEach(el =>el.value = fieldValue);
+    }
+
+    function dataUpdate(item){
+      updateField(item.getAttribute('id'),item.value);
+      dataChange(item);
+    }
+
+    function downloadInfo(){
+      let info = {
+        width: document.getElementById('width').value + "px",
+        height: document.getElementById('height').value + "px",
+        blockSize: document.getElementById('blockSize').value + "px",
+        start: document.getElementById('start').value,
+      };
+      let infoAsJsonText = JSON.stringify(info,null,2);
+      navigator.clipboard.writeText(infoAsJsonText);
+      let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(infoAsJsonText);
+      let downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href",     dataStr     );
+      downloadAnchorNode.setAttribute("download", "raster.json");
+      downloadAnchorNode.click();
     }
 
     window.togglePanel = togglePanel;
@@ -76,18 +123,13 @@
     window.animateAlways = animateAlways;
     window.setDefaultStart = setDefaultStart;
     window.startUpdate = startUpdate;
+    window.activateRender = activateRender;
+    window.updateField = updateField;
+    window.dataUpdate = dataUpdate;
+    window.downloadInfo = downloadInfo;
   </script>
   <script type="module" src='./Raster.js'></script>
   <script type="module" src='./main.js'></script>
-
-
-  <!--
-    <canvas id="canvas1" width="800" height="400"></canvas>   
-    <div class="container" >
-         
-    </div>
-    -->
-
 
   <div class="container" id="container">
     <canvas id="canvas1"></canvas>
@@ -96,76 +138,81 @@
 
   </div>
 
+  <!--   Control section -->
 
+  <!----------------------------------------------- Colors Panel --------------------------------------------->
+  <div class="colorsPalleteContainer backdrop-saturate-200" id="colorsPalleteContainer">
+    <div style="display: flex;flex-direction: row;width: 100%; justify-content: space-between;">
+      <span class="controlLabel" style="font-size: large;">KfW Colors</span>
+      <img src="./assets/arrow.png" class="panelIcon" style="padding: 0px;width: 24px;padding-top: 5px;"
+        onclick="togglePanel(this,'colorsPalleteContainer')" id="colorsIcon">
 
-
-
-
-
-
-
- <div class="colorsPalleteContainer backdrop-saturate-200" id="colorsPalleteContainer">
-  <div style="display: flex;flex-direction: row;width: 100%; justify-content: space-between;">
-    <span class="controlLabel" style="font-size: large;">KfW Colors</span>
-    <img src="./assets/arrow.png" class="panelIcon" style="padding: 0px;width: 24px;"  onclick="togglePanel(this,'colorsPalleteContainer','170')" id="panelIcon">
-  
-  </div>
-  <!--             Colors            -->
-  <div class="colorContainer">
-    <div class="colorSample" style="background-color: #E9F5FB;"></div>
-    <div class="colorSample" style="background-color: #D1EBF7;"></div>
-    <div class="colorSample" style="background-color: #97CFED;"></div>
-    <div class="colorSample" style="background-color: #54B3E2;"></div>
-    <div class="colorSample" style="background-color: #007ABC;"></div>
-    <div class="colorSample" style="background-color: #005A8C;"></div>
-    <div class="colorSample" style="background-color: #00446E;"></div>
-    <div class="colorSample" style="background-color: #00375B;"></div>
-  </div>
-  <div class="colorContainer">
-    <div class="colorSample" style="background-color: #ECFDED;"></div>
-    <div class="colorSample" style="background-color: #D4FCCA;"></div>
-    <div class="colorSample" style="background-color: #B7F9AA;"></div>
-    <div class="colorSample" style="background-color: #94EB90;"></div>
-    <div class="colorSample" style="background-color: #57D96D;"></div>
-    <div class="colorSample" style="background-color: #23B75F;"></div>
-    <div class="colorSample" style="background-color: #398357;"></div>
-    <div class="colorSample" style="background-color: #266446;"></div>
-  </div>
-  <div class="colorContainer">
-    <div class="colorSample" style="background-color: #EFF0F2;"></div>
-    <div class="colorSample" style="background-color: #D8DFE3;"></div>
-    <div class="colorSample" style="background-color: #A1ADB5;"></div>
-    <div class="colorSample" style="background-color: #6D757D;"></div>
-    <div class="colorSample" style="background-color: #41484C;"></div>
-    <div class="colorSample" style="background-color: #2D3134;"></div>
-  </div>
- </div>
- 
-  <div class="controlContainer backdrop-saturate-200" id="controlContainer">
-    <!--             ARROW            -->
-    <div style="display: flex;flex-direction: column;">
-      <img src="./assets/arrow.png" class="panelIcon" onclick="togglePanel(this,'controlContainer','290')" id="panelIcon">
-      <img src="./assets/photo-camera.png"  class="panelIcon" onclick="takeScreenShot()" id="panelIcon">
     </div>
+    <!--             Colors            -->
+    <div class="colorContainer">
+      <div class="colorSample" style="background-color: #E9F5FB;"></div>
+      <div class="colorSample" style="background-color: #D1EBF7;"></div>
+      <div class="colorSample" style="background-color: #97CFED;"></div>
+      <div class="colorSample" style="background-color: #54B3E2;"></div>
+      <div class="colorSample" style="background-color: #007ABC;"></div>
+      <div class="colorSample" style="background-color: #005A8C;"></div>
+      <div class="colorSample" style="background-color: #00446E;"></div>
+      <div class="colorSample" style="background-color: #00375B;"></div>
+    </div>
+    <div class="colorContainer">
+      <div class="colorSample" style="background-color: #ECFDED;"></div>
+      <div class="colorSample" style="background-color: #D4FCCA;"></div>
+      <div class="colorSample" style="background-color: #B7F9AA;"></div>
+      <div class="colorSample" style="background-color: #94EB90;"></div>
+      <div class="colorSample" style="background-color: #57D96D;"></div>
+      <div class="colorSample" style="background-color: #23B75F;"></div>
+      <div class="colorSample" style="background-color: #398357;"></div>
+      <div class="colorSample" style="background-color: #266446;"></div>
+    </div>
+    <div class="colorContainer">
+      <div class="colorSample" style="background-color: #EFF0F2;"></div>
+      <div class="colorSample" style="background-color: #D8DFE3;"></div>
+      <div class="colorSample" style="background-color: #A1ADB5;"></div>
+      <div class="colorSample" style="background-color: #6D757D;"></div>
+      <div class="colorSample" style="background-color: #41484C;"></div>
+      <div class="colorSample" style="background-color: #2D3134;"></div>
+    </div>
+  </div>
 
+
+  <!----------------------------------------------- Control Panel --------------------------------------------->
+  <div class="controlContainer backdrop-saturate-200" id="controlContainer">
+
+    <!--             Actions            -->
+    <div style="display: flex;flex-direction: column;">
+      <img src="./assets/arrow.png" class="panelIcon" onclick="togglePanel(this,'controlContainer')"
+        id="panelIcon">
+      <img src="./assets/photo-camera.png" class="panelIcon" onclick="takeScreenShot()" id="snapshot">
+      <img src="./assets/export.png" class="panelIcon" onclick="downloadInfo()" />
+      <img src="./assets/render_active.png" class="panelIcon" onclick="draw()" id="btnRender" ondblclick="activateRender(false);">
+      <img src="./assets/live_disabled.png" class="panelIcon" id="btnLive" ondblclick="activateRender(true);">
+    </div>
+    <!--             Static Raster Setup          -->
     <div class="rasterContainer">
       <span class="controlLabel">Balken Setup</span>
+
       <label for="blockSize">Block Size</label>
-      <input name="blockSize" type="number" value="16" id="blockSize" onchange="dataChange(this);" />
+      <input name="blockSize" type="range" value="16" id="blockSize" onchange="dataUpdate(this);" />
+
       <label for="start">Start</label>
       <input name="start" type="range" min="1" max="100" value="45" id="start" onchange="startUpdate(this);" />
-      <label for="defaultStart" >Default</label>
-      <input type="checkbox" id="defaultStart" value="remove" onchange="setDefaultStart(this)" checked />
-      
+
       <label for="height">Height</label>
-      <input name="height" type="range" min="30" max="1080" value="500" id="height" onchange="dataChange(this);" />
+      <input name="height" type="range" min="30" max="1080" value="500" id="height" onchange="dataUpdate(this);" />
+
       <label for="width">Width</label>
-      <input name="width" type="range" min="50" max="1920" value="1000" id="width" onchange="dataChange(this);" />
+      <input name="width" type="range" min="50" max="1920" value="1000" id="width" onchange="dataUpdate(this);" />
+
       <div style="display: flex;flex-direction: row;">
         <input type="color" id="color1" name="color1" value="#005A8C" onchange="dataChange(this);">
         <input type="color" id="color2" name="color2" value="#B7F9AA" onchange="dataChange(this);">
       </div>
-      
+
 
       <!--
       <fieldset>
@@ -188,45 +235,87 @@
 
       -->
     </div>
-    <div class="rasterContainer" style="border-radius: 0;">
-      <span class="controlLabel">Animation</span>
-      <label for="fps">FPS</label>
-      <input name="fps" type="number" value="30" id="fps" onchange="dataChange(this);" />
 
-      <div style="display: flex;flex-direction: row;">
-        <img src="assets/vector.png" style="width: 16px;padding-left: 10px;cursor: pointer;" onclick="doAnimate(false)" />
-        <img src="assets/infinity.png" id="animateAlways" style="width: 16px;padding-left: 10px;cursor: pointer;" onclick="animateAlways()" />
-        <!--input name="animatealways" type="button" value="∞" id="blockSize" onclick="doAnimate(true)" /-->
-        <!--input name="animateonce" type="button" value="Animate" id="blockSize" onclick="doAnimate(false)" /-->
+
+    <!--             Dynamic and Settings Panels          -->
+    <div style="display: flex;flex-direction: column;">
+
+      <!--             Dynamic Raster Setup          -->
+      <div class="rasterContainer" style="border-radius: 0;margin:20px 0px 0px 0px;">
+        <span class="controlLabel">Animation</span>
+        <label for="fps">FPS</label>
+        <input name="fps" type="number" value="30" id="fps" onchange="dataChange(this);" />
+
+        <div style="display: flex;flex-direction: row;">
+          <img src="assets/vector.png" style="width: 16px;padding-left: 10px;cursor: pointer;"
+            onclick="doAnimate(false)" />
+          <img src="assets/infinity.png" id="animateAlways" style="width: 16px;padding-left: 10px;cursor: pointer;"
+            onclick="animateAlways()" />
+        </div>
+      </div>
+
+      <!--             Settings Panel          -->
+      <div>
+        <table style="width: 300px;border:1px solid gray;margin-top:10px; padding: 10px;">
+          <tr>
+            <td>Block Size</td>
+            <td colspan="2"><input name="blockSize" type="number" value="16" id="blockSize" onchange="dataUpdate(this);" /></td>
+          </tr>
+          <tr>
+            <td>Height</td>
+            <td colspan="2"><input  type="number" id="height" onchange="dataUpdate(this)"/></td>
+          </tr>
+          <tr>
+            <td>Width</td>
+            <td colspan="2"><input type="number" id="width" onchange="dataUpdate(this)"/></td>
+          </tr>
+          <tr>
+            <td>Start</td>
+            <td><input type="number" id="start" onchange="dataUpdate(this)"/></td>
+            <td><img src="assets/undo.png" style="width: 16px;cursor: pointer;" onclick="setDefaultStart()" /></td>
+          </tr>
+        </table>
       </div>
     </div>
 
 
+    <!--             TEXT  Settings Panel           -->
+    <div class="textContainer">
+      <span class="controlLabel">Text Setup</span>
+      <label for="textValue">Text</label>
+      <input name="textValue" type="text" value="KfW Bank" id="textValue"
+        onchange="document.getElementById('textEl').innerHTML=this.value" />
 
-    
-      <!--             TEXT            -->
-      <div class="textContainer">
-        <span class="controlLabel">Text Setup</span>
-        <label for="textValue">Text</label>
-        <input name="textValue" type="text" value="KfW Bank" id="textValue"
-          onchange="document.getElementById('textEl').innerHTML=this.value" />
+      <label for="fontSize">Font Size</label>
+      <input name="fontSize" type="number" value="30" id="fontSize"
+        onchange="document.getElementById('textEl').style.fontSize=this.value+'px'" />
+      <label for="start">Start</label>
+      <input name="start" type="range" min="1" max="100" value="1" id="start"
+        onchange="document.getElementById('textEl').style.left=(this.value*8)+'px'" />
 
-        <label for="fontSize">Font Size</label>
-        <input name="fontSize" type="number" value="30" id="fontSize"
-          onchange="document.getElementById('textEl').style.fontSize=this.value+'px'" />
-        <label for="start">Start</label>
-        <input name="start" type="range" min="1" max="100" value="1" id="start"
-          onchange="document.getElementById('textEl').style.left=(this.value*8)+'px'" />
-
-        <label for="textTop">Top</label>
-        <input name="textTop" type="range" min="15" max="800" value="15" id="textTop"
-          onchange="document.getElementById('textEl').style.top=this.value+'px'" />
-        <input type="color" id="color1" name="color1" value="#000000"
-          onchange="document.getElementById('textEl').style.color=this.value" />
-      </div>
+      <label for="textTop">Top</label>
+      <input name="textTop" type="range" min="15" max="800" value="15" id="textTop"
+        onchange="document.getElementById('textEl').style.top=this.value+'px'" />
+      <input type="color" id="color1" name="color1" value="#000000"
+        onchange="document.getElementById('textEl').style.color=this.value" />
+    </div>
   </div>
-      
+
+
+
+
+
+
   <img style="display: none;" id="saveImage" />
+  <script type="module">
+    window.togglePanel(document.getElementById('panelIcon'), 'controlContainer');
+    window.togglePanel(document.getElementById('colorsIcon'), 'colorsPalleteContainer');
+    updateField('height',400);
+    updateField('width',600);
+    updateField('start',45);
+    updateField('blockSize',16);
+    
+  </script>
 
 
 

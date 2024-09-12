@@ -1,23 +1,16 @@
 
 export class Raster{
-
-
     fps = 10;
     frameTime = 1000/this.fps;
     starTime=0;
     prevTime = -1;
     animatRef = 1;
     animConfig={};
-    
-
     animateAlways = false;
     stopAnimation = false;
-
-
+    
     constructor(){
     }
-
-
 
     animateNext(timeStamp){
         let now = Date.now();
@@ -47,6 +40,7 @@ export class Raster{
             return this.animConfig.start>=this.animConfig.width*0.5;
         }
     }
+
     animationStopped(){
         if (this.stopAnimation) return;
         if (this.animateAlways){
@@ -60,7 +54,6 @@ export class Raster{
     
         }
     }
-
 
     doAnimateOnce(config){
         console.log("Animate Once is called ....");
@@ -102,10 +95,6 @@ export class Raster{
         }, 1000);
 
     }
-
-
-
-
 
     draw(config){
         //console.log("Config: " + JSON.stringify(config,null,2))
