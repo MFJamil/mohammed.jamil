@@ -1,4 +1,5 @@
 
+
 export class Raster{
     fps = 10;
     frameTime = 1000/this.fps;
@@ -96,6 +97,15 @@ export class Raster{
 
     }
 
+    presetBlockSize(start,end,blockSize){
+        let range = end-start;
+        let blkNr = range/blockSize;
+        let newBlkNr  = Math.round(blkNr);
+        let newBlkSize =  range/newBlkNr;
+        console.log(` ***********  Original Size ${blockSize} result in cells No : ${blkNr} - rounded to : ${newBlkNr}, preseting the block size to : ${newBlkSize}  `  )
+        return  [newBlkSize,newBlkNr]; // Should be a integer
+    }
+
     draw(config){
         //console.log("Config: " + JSON.stringify(config,null,2))
        
@@ -126,8 +136,10 @@ export class Raster{
         
 
         const blockNr = 16;
-        const blockSize = config.blockSize;
-        const startSize = blockSize/10;
+        const [blockSize,newBlkNr] = this.presetBlockSize(startDraw,endDraw,config.blockSize);
+        endDraw = startDraw + (blockSize*newBlkNr);
+        const startSize = 1;
+        
 
 
         const setting1 = {
@@ -140,7 +152,7 @@ export class Raster{
             bcolor:config.color1,
             startPaint: startDraw,
             endPaint: endDraw,
-            blockNr: blockNr,
+            blockNr: newBlkNr,
             blockSize: blockSize,
             startSize: startSize,
             policy: config.policy
@@ -157,11 +169,12 @@ export class Raster{
             bcolor:config.color2,
             startPaint: result.endPoint,
             endPaint: result.endPoint + (w * 0.225),
-            blockNr: 19,
+            blockNr: newBlkNr,
             blockSize: blockSize,
             startSize: result.lastSize,
             policy: config.policy
         }
+        //console.dir(setting2)
         if (config.drawRight)
              result = this.drawBlock(setting2);
         ct.fillStyle = config.color2;
@@ -191,7 +204,7 @@ export class Raster{
         let sizeInc = 0;
         if (set.grow){
             if(set.policy==='fixed'){
-                sizeInc = (set.blockSize-set.startSize)/((set.endPaint-set.startPaint)/set.blockSize);
+                sizeInc = (set.blockSize-set.startSize)/(set.blockNr-1);
             }else{
                 sizeInc = (set.blockSize-set.startSize)/set.blockNr;
             }
@@ -208,7 +221,7 @@ export class Raster{
 
 
     drawBlock(set){
-        //console.log((set.grow?"Left":"Right") + " :: " + JSON.stringify(set,null,2));
+        console.log((set.grow?"Left":"Right") + " :: " + JSON.stringify(set,null,2));
         const sizeInc = this.calculateSize(set);
         //console.log("Size Increment : " + sizeInc);
 
@@ -239,7 +252,8 @@ export class Raster{
             while(sy<=set.h){
         
                 if (doPaint){
-                    this.drawSquare(set.fcolor,set.fcolor, sx + ((blkSize - ss)/2) , sy + ((blkSize- ss)/2) , ss , ss);        
+                    this.drawSquare(set.fcolor,set.fcolor, sx + ((blkSize - ss)/2) , sy + ((blkSize- ss)/2) , ss , ss);    
+                    console.log(" BlockSize : " + ss);    
                     //console.log(`\tsx:${sx} blockSize:${blkSize} ss: ${ss} this.drawSquare(set.fcolor,set.bcolor, ${sx + ((blkSize - ss)/2)}  ,${sy + ((blkSize- ss)/2)}  , ${ss} ,  ${ss}`);        
                     //console.log("Painting Qube Size : " + ss );
                 }else{

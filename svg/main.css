@@ -1,0 +1,23 @@
+.testClip{
+    height: 600px;
+    width: 1000;
+    background-color: lightgray;
+    clip-path: path('M0,0 H1 V0.9 H0.9 v0.1 L0.75,0.9 L0.1,0.9 Q0,0.8,0,0.8 Z');
+}
+.svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .tag-wrap {
+    filter: drop-shadow(-2px 12px 6px rgba(50, 50, 0, 0.5));
+    margin: auto;
+  }
+  .clipped {
+    margin-top: 100px;
+    width: 1200px;
+    height: 800px;
+    background: rgb(4, 59, 141) url(https://source.unsplash.com/600x600?summer);
+    background-size: cover;
+    clip-path: url(#my-clip-path);
+  }
